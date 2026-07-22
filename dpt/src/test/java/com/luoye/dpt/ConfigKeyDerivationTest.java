@@ -33,7 +33,8 @@ public class ConfigKeyDerivationTest {
         randomKey[9] = 0x74;
 
         String packageName = "com.example.app";
-        byte[] aesKey = CryptoUtils.hmacSha256(randomKey, packageName);
+        String keyMaterial = packageName + "2.14.0";
+        byte[] aesKey = CryptoUtils.hmacSha256(randomKey, keyMaterial);
         Assert.assertEquals(32, aesKey.length);
 
         byte[] iv = KeyUtils.generateIV(randomKey);
@@ -49,7 +50,7 @@ public class ConfigKeyDerivationTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testHmacRejectEmptyPackageName() {
+    public void testHmacRejectEmptyKeyMaterial() {
         CryptoUtils.hmacSha256(new byte[16], "");
     }
 

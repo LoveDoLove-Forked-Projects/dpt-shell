@@ -27,19 +27,19 @@ public class CryptoUtils {
     }
 
     /**
-     * Derive AES-256 key by HMAC-SHA256(randomKey, UTF-8(packageName)).
+     * Derive AES-256 key by HMAC-SHA256(randomKey, UTF-8(keyMaterial)).
      */
-    public static byte[] hmacSha256(byte[] key, String packageName) {
+    public static byte[] hmacSha256(byte[] key, String keyMaterial) {
         if (key == null || key.length == 0) {
             throw new IllegalArgumentException("hmac key is empty");
         }
-        if (packageName == null || packageName.isEmpty()) {
-            throw new IllegalArgumentException("package name is empty");
+        if (keyMaterial == null || keyMaterial.isEmpty()) {
+            throw new IllegalArgumentException("key material is empty");
         }
         try {
             Mac mac = Mac.getInstance(HMAC_SHA256);
             mac.init(new SecretKeySpec(key, HMAC_SHA256));
-            byte[] result = mac.doFinal(packageName.getBytes(StandardCharsets.UTF_8));
+            byte[] result = mac.doFinal(keyMaterial.getBytes(StandardCharsets.UTF_8));
             if (result == null || result.length != 32) {
                 throw new IllegalStateException("unexpected hmac length");
             }

@@ -39,12 +39,16 @@ public class Dpt {
     }
 
     private static void printVersion() {
+        System.out.println(getVersion());
+    }
+
+    public static String getVersion() {
         Package pkg = Dpt.class.getPackage();
         String version = (pkg != null) ? pkg.getImplementationVersion() : null;
         if (version == null) {
             version = "unknown";
         }
-        System.out.println(version);
+        return version;
     }
 
     private static AndroidPackage parseOptions(String[] args) {

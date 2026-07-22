@@ -81,8 +81,14 @@ endif()
 
 message("so name: ${SO_NAME}")
 
+if(NOT DEFINED DPT_VERSION_NAME OR DPT_VERSION_NAME STREQUAL "")
+    message(FATAL_ERROR "DPT_VERSION_NAME is required")
+endif()
+message("dpt version: ${DPT_VERSION_NAME}")
+
 add_compile_definitions(JNI_BRIDGE_NAME="${JNI_BRIDGE_NAME}")
 add_compile_definitions(SO_NAME="lib${SO_NAME}.so")
+add_compile_definitions(DPT_VERSION_NAME="${DPT_VERSION_NAME}")
 
 include_directories(./ )
 include_directories(./common)

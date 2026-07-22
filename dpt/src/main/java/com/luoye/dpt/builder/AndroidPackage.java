@@ -3,6 +3,7 @@ package com.luoye.dpt.builder;
 
 import com.alibaba.fastjson2.JSON;
 import com.iyxan23.zipalignjava.ZipAlign;
+import com.luoye.dpt.Dpt;
 import com.luoye.dpt.config.Const;
 import com.luoye.dpt.config.ProtectRules;
 import com.luoye.dpt.config.ShellConfig;
@@ -367,9 +368,9 @@ public abstract class AndroidPackage {
         File configFile = new File(getOutAssetsDir(packageDir).getAbsolutePath() + File.separator + Const.KEY_SHELL_CONFIG_STORE_NAME);
         ShellConfig shellConfig = ShellConfig.getInstance();
         String json = shellConfig.toJson();
+        String keyMaterial = packageName + "_" + Dpt.getVersion();
         LogUtils.info("Write config: " + json);
-        LogUtils.info("Derive config aes key with package: " + packageName);
-        byte[] aesKey = CryptoUtils.hmacSha256(key, packageName);
+        byte[] aesKey = CryptoUtils.hmacSha256(key, keyMaterial);
         byte[] iv = KeyUtils.generateIV(key);
         byte[] secData = CryptoUtils.aesEncrypt(aesKey, iv, json.getBytes(StandardCharsets.UTF_8));
         if (secData == null) {

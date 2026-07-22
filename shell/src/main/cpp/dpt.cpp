@@ -518,12 +518,14 @@ DPT_ENCRYPT void read_shell_config(JNIEnv *env) {
 
             std::string packageName(packageNameChs);
             env->ReleaseStringUTFChars(packageNameJstr, packageNameChs);
-            DLOGD("package name for config key: %s", packageName.c_str());
+            const char *version = AY_OBFUSCATE(DPT_VERSION_NAME);
+            std::string key_material = packageName + "_" + version;
+            DLOGD("key material for config key: %s", key_material.c_str());
 
             auto aes_key = hmac_sha256(DPT_UNKNOWN_DATA,
                                        16,
-                                       reinterpret_cast<const uint8_t *>(packageName.data()),
-                                       packageName.size());
+                                       reinterpret_cast<const uint8_t *>(key_material.data()),
+                                       key_material.size());
             if (aes_key.size() != 32) {
                 DLOGE("derive config aes key failed");
                 unload_package(package_addr, package_size);
